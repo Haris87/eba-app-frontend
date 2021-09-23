@@ -21,7 +21,7 @@ export class EntityService {
     sortOrder: string | null
   ): Observable<EntityPage> {
     let params = new HttpParams();
-    params = params.append('page', `${page}`);
+    params = params.append('page', `${page - 1}`);
     params = params.append('pageSize', `${pageSize}`);
     if (searchTerm) params = params.append('term', `${searchTerm}`);
     if (sortField) params = params.append('sortField', `${sortField}`);

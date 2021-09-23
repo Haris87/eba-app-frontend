@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   entities: Entity[] = [];
   loading = true;
   pageSize = 10;
-  pageIndex = 0;
+  pageIndex = 1;
   total = 200;
   searchTerm: string | null = null;
 
