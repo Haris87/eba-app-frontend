@@ -1,0 +1,82 @@
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+      <a href="" target="_blank">
+        <h1 *ngIf="!isCollapsed">EBA Application</h1>
+      </a>
+    </div>
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li nz-submenu nzOpen nzTitle="Entities" nzIcon="team">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/search">Search</a>
+          </li>
+          <li nz-menu-item nzMatchRouter nzMatchRouterExact>
+            <a routerLink="/entity">Add Entity</a>
+          </li>
+        </ul>
+      </li>
+      <!-- <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a>Basic Form</a>
+          </li>
+        </ul>
+      </li> -->
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header" nz-row>
+        <div
+          nz-col
+          nzFlex="200px"
+          class="header-trigger"
+          (click)="isCollapsed = !isCollapsed"
+        >
+          <div>
+            <i
+              class="trigger"
+              nz-icon
+              [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+          </div>
+        </div>
+        <div nz-col nzFlex="auto"></div>
+        <div nz-col nzFlex="100"></div>
+        <div nz-col class="header-trigger">
+          <div nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+            <nz-avatar
+              nzIcon="user"
+              nzSrc="https://lorempixel.com/100/100/people/"
+            ></nz-avatar>
+          </div>
+
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item nzDisabled>Profile</li>
+              <li nz-menu-item (click)="logout()">Logout</li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

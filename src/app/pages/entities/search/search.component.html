@@ -1,0 +1,78 @@
+<div>
+  <nz-page-header class="site-page-header">
+    <nz-page-header-title>Search Entities</nz-page-header-title>
+    <nz-page-header-subtitle>Search for entities</nz-page-header-subtitle>
+    <nz-page-header-extra>
+      <div nz-row>
+        <div nz-col nzFlex="auto">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+            <input
+              type="text"
+              nz-input
+              placeholder="Search for an entity name"
+              #searchInput="ngModel"
+              [nzAutocomplete]="auto"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+            />
+          </nz-input-group>
+          <ng-template #suffixButton>
+            <button nz-button nzType="default" nzSearch (click)="search()">
+              <i nz-icon nzType="search"></i>
+              Search
+            </button>
+          </ng-template>
+          <nz-autocomplete
+            [nzDataSource]="options"
+            nzBackfill
+            #auto
+          ></nz-autocomplete>
+        </div>
+
+        <div nz-col nzFlex="20px"></div>
+        <div>
+          <button nz-button nzType="primary" [routerLink]="['/entity']">
+            <i nz-icon nzType="plus"></i>
+            Add Entity
+          </button>
+        </div>
+      </div>
+    </nz-page-header-extra>
+  </nz-page-header>
+</div>
+
+<div>
+  <nz-table
+    nzShowSizeChanger
+    [nzData]="entities"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzShowSizeChanger]="false"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    [nzSize]="'middle'"
+    [nzPaginationType]="'small'"
+    [nzFooter]="'Records: ' + total"
+    (nzQueryParams)="onQueryParamsChange($event)"
+  >
+    <thead>
+      <tr>
+        <th nzColumnKey="name" [nzSortFn]="true">Name</th>
+        <th nzColumnKey="address">Address</th>
+        <th nzColumnKey="phone">Phone</th>
+        <th nzColumnKey="email">Email</th>
+        <th nzColumnKey="action">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entity of entities">
+        <td>{{ entity.name }}</td>
+        <td>{{ entity.address }}</td>
+        <td>{{ entity.phone }}</td>
+        <td>{{ entity.email }}</td>
+        <td><a [routerLink]="['/entity', entity._id]">View</a></td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

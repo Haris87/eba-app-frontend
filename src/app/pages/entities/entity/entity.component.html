@@ -1,0 +1,202 @@
+<div nz-col nzFlex="80">
+  <nz-spin [nzSpinning]="loading">
+    <div>
+      <nz-page-header class="site-page-header">
+        <nz-page-header-title
+          >{{ id ? "View" : "Create" }} Entity</nz-page-header-title
+        >
+        <nz-page-header-subtitle
+          >Create, view, edit or comment on an entity</nz-page-header-subtitle
+        >
+      </nz-page-header>
+    </div>
+
+    <div>
+      <form nz-form [formGroup]="entityForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label
+            [nzSm]="6"
+            [nzXs]="24"
+            nzFor="name"
+            nzRequired
+            nzTooltipTitle="Please enter entity name"
+          >
+            <span>Name</span>
+          </nz-form-label>
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            nzErrorTip="Please enter a valid name, less than 50 characters"
+          >
+            <input nz-input id="name" formControlName="name" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email"
+            >E-mail</nz-form-label
+          >
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            nzErrorTip="Please enter a valid email, less than 50 characters"
+          >
+            <input nz-input formControlName="email" id="email" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phone"
+            >Phone Number</nz-form-label
+          >
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            [nzValidateStatus]="entityForm.controls['phone']"
+            nzErrorTip="Please enter a valid phone number, less than 50 characters"
+          >
+            <input formControlName="phone" id="'phone'" nz-input />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="website"
+            >Website</nz-form-label
+          >
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            nzErrorTip="Please enter a valid website url, less than 50 characters"
+          >
+            <input
+              nz-input
+              id="website"
+              formControlName="website"
+              placeholder=""
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address"
+            >Address</nz-form-label
+          >
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            nzErrorTip="Please enter a valid address, less than 50 characters"
+          >
+            <input
+              nz-input
+              id="address"
+              formControlName="address"
+              placeholder=""
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="center" class="submit" *ngIf="editable">
+          <div nz-col>
+            <button nz-button (click)="resetForm()" nzType="default">
+              <i nz-icon nzType="reload"></i>
+              Reset
+            </button>
+          </div>
+          <div nz-col nzFlex="10px"></div>
+          <div nz-col>
+            <button type="submit" nz-button nzType="primary">
+              <i nz-icon nzType="save"></i> Save
+            </button>
+          </div>
+        </div>
+
+        <div nz-row nzJustify="center" *ngIf="!editable">
+          <button nz-button (click)="makeEditable()" nzType="default">
+            <i nz-icon nzType="edit"></i>
+            Edit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div nz-row *ngIf="id" class="nz-divider-wrapper">
+      <nz-divider nzDashed [nzText]="text">
+        <ng-template #text>
+          <i nz-icon nzType="comment"></i>
+          Comments
+        </ng-template>
+      </nz-divider>
+    </div>
+
+    <div nz-row *ngIf="id">
+      <div nz-col nzFlex="15"></div>
+      <div nz-col nzFlex="70">
+        <div>
+          <nz-comment>
+            <nz-avatar
+              nz-comment-avatar
+              nzIcon="user"
+              [nzSrc]="user.avatar"
+            ></nz-avatar>
+            <nz-comment-content>
+              <form
+                nz-form
+                [formGroup]="commentForm"
+                (ngSubmit)="submitComment()"
+              >
+                <nz-form-item>
+                  <nz-form-control
+                    nzErrorTip="Please enter a comment with more than 3 and less than 500 characters"
+                  >
+                    <textarea
+                      id="commentText"
+                      formControlName="commentText"
+                      nz-input
+                      rows="4"
+                    ></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <button
+                    nz-button
+                    nzType="primary"
+                    [nzLoading]="loadingComments"
+                    [disabled]="loadingComments"
+                    (click)="submitComment()"
+                  >
+                    Add Comment
+                  </button>
+                </nz-form-item>
+              </form>
+            </nz-comment-content>
+          </nz-comment>
+        </div>
+
+        <div>
+          <nz-list
+            *ngIf="entity.comments.length"
+            [nzDataSource]="entity.comments"
+            [nzRenderItem]="item"
+            [nzItemLayout]="'horizontal'"
+          >
+            <ng-template #item let-item>
+              <nz-comment
+                [nzAuthor]="item.author"
+                [nzDatetime]="item.displayTime"
+              >
+                <nz-avatar
+                  nz-comment-avatar
+                  nzIcon="user"
+                  [nzSrc]="item.avatar"
+                ></nz-avatar>
+                <nz-comment-content>
+                  <p>{{ item.content }}</p>
+                </nz-comment-content>
+              </nz-comment>
+            </ng-template>
+          </nz-list>
+        </div>
+      </div>
+      <div nz-col nzFlex="15"></div>
+    </div>
+  </nz-spin>
+</div>
