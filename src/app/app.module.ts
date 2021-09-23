@@ -16,6 +16,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -35,6 +36,7 @@ registerLocaleData(en);
     NzDropDownModule,
     NzAvatarModule,
     NzGridModule,
+    NzIconModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
